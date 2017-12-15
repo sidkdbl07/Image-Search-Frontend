@@ -1,0 +1,23 @@
+<template name="search">
+  <div id="content" class="content">
+    {{> header}}
+    <div class="page-content" id="photos-content">
+      {{#if subsReady 'user'}}
+        {{#each photos}}
+          <div class="photo-container"><img src="data:image/jpg;base64,{{thumbnail}}" /></div>
+        {{/each}}
+        {{#if morePhotos}}
+          <div class="photo-container" id='showMorePhotos'>&nbsp;</div>
+        {{/if}}
+      {{else}}
+        {{>loading}}
+      {{/if}}
+    </div>
+    {{> snackbar}}
+    <div id="side-view" class="right-form">
+      <div class="row">
+        <div class="right-form-header">Right Form</div>
+      </div>
+    </div>
+  </div>
+</template>
