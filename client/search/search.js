@@ -57,17 +57,42 @@ Template.search.helpers({
   formattedDate: function(date) {
     return moment(date).format('MMM D, YYYY');
   },
+  morePhotos: function() {
+    return !(Photos.find().count() < Session.get('photosLimit'))
+  },
   photos: function() {
     return Photos.find().fetch();
   },
-  morePhotos: function() {
-    return !(Photos.find().count() < Session.get('photosLimit'))
+  selectedPhoto: function() {
+    return Photos.findOne({_id: Session.get('selectedPhoto')});
   }
 });
 
 Template.search.events({
+  'click .close-side-view': function(e) {
+    e.preventDefault();
+    $("#side-view").removeClass("show");
+  },
+  'click .photo-container': function(e) {
+    e.preventDefault();
+    var target = $(e.target);
+    if(!$(e.target).hasClass('photo-container')) {
+      target = $(e.target).closest('div.photo-container');
+    }
+    photoid = target.attr('photo-id');
+    Session.set('selectedPhoto', photoid);
+    $("#side-view").addClass("show");
+  },
   'scroll #photos-content': function(e) {
     e.preventDefault();
     showMoreVisible();
+  },
+  'mouseenter .photo-container': function(e) {
+    e.preventDefault();
+    $(e.target).find('.photo-tag').addClass('show');
+  },
+  'mouseleave .photo-container': function(e) {
+    e.preventDefault();
+    $('.photo-tag').removeClass('show');
   }
 });

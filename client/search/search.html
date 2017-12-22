@@ -4,7 +4,10 @@
     <div class="page-content" id="photos-content">
       {{#if subsReady 'user'}}
         {{#each photos}}
-          <div class="photo-container"><img src="data:image/jpg;base64,{{thumbnail}}" /></div>
+          <div class="photo-container" photo-id="{{_id}}">
+            <img src="data:image/jpg;base64,{{thumbnail}}" />
+            <div class="photo-tag">&nbsp;{{width}} x {{height}}</div>
+          </div>
         {{/each}}
         {{#if morePhotos}}
           <div class="photo-container" id='showMorePhotos'>&nbsp;</div>
@@ -16,8 +19,21 @@
     {{> snackbar}}
     <div id="side-view" class="right-form">
       <div class="row">
-        <div class="right-form-header">Right Form</div>
+        <div class="col-sm-12"><a href="#" class="close-side-view btn btn-default pull-right"><i class="fa fa-times"></i></a></div>
       </div>
+      {{#with selectedPhoto}}
+      <div class="row">
+        <div class="col-sm-12"><img src="data:image/jpg;base64,{{thumbnail}}" class="center-block"/></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 dimension-text">{{width}} x {{height}}</div>
+      </div>
+      {{#each filepaths}}
+      <div class="row">
+        <div class="col-sm-12 filepath-text">{{this}}</div>
+      </div>
+      {{/each}}
+      {{/with}}
     </div>
   </div>
 </template>
