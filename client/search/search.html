@@ -4,9 +4,9 @@
     <div class="page-content" id="photos-content">
       {{#if subsReady 'user'}}
         {{#each photos}}
-          <div class="photo-container" photo-id="{{_id}}">
-            <img src="data:image/jpg;base64,{{thumbnail}}" />
-            <div class="photo-tag">&nbsp;{{width}} x {{height}}</div>
+          <div class="photo-container {{#if isSelectedPhoto}}selected{{/if}}" photo-id="{{_id}}">
+            {{{formattedImg}}}
+            <div class="photo-tag">&nbsp;{{width}} x {{height}} {{selectedColor}}</div>
           </div>
         {{/each}}
         {{#if morePhotos}}
@@ -26,14 +26,110 @@
         <div class="col-sm-12"><img src="data:image/jpg;base64,{{thumbnail}}" class="center-block"/></div>
       </div>
       <div class="row">
-        <div class="col-sm-12 dimension-text">{{width}} x {{height}}</div>
+        <div class="col-sm-12 dimension-text">
+          w x h (pixels): {{width}} x {{height}}<br/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 dimension-text text-center"><i class="fa fa-folder-open fa-2x"></i></div>
+        <div class="col-sm-10 dimension-text">
+          {{projectno}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 dimension-text text-center"><i class="fa fa-camera fa-2x"></i></div>
+        <div class="col-sm-10 dimension-text">
+          Taken: {{formattedDate datetaken}}<br/>
+          Found: {{formattedDate datefound}}<br/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 dimension-text text-center"><i class="fa fa-map-marker fa-2x"></i></div>
+        <div class="col-sm-10 dimension-text">
+          {{#if hasLocation}}
+          Latitude: {{location.coordinates.[1]}}<br/>
+          Longitude: {{location.coordinates.[0]}}<br/>
+          <a href="https://maps.google.com/maps?q={{location.coordinates.[1]}},{{location.coordinates[0]}}&z=8.5" target="_blank">See on map</a>
+          {{else}}
+          No geo-location data attached
+          {{/if}}
+        </div>
       </div>
       {{#each filepaths}}
       <div class="row">
-        <div class="col-sm-12 filepath-text">{{this}}</div>
+        <div class="col-sm-12 filepath-text">{{{formatFilepath}}}</div>
       </div>
       {{/each}}
       {{/with}}
+    </div>
+
+    <div id="filter-view" class="right-form">
+      <div class="row">
+        <div class="col-sm-12"><a href="#" class="close-side-view btn btn-default pull-right"><i class="fa fa-times"></i></a></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table width="100%">
+            <tr>
+              <td class="filter-heading" >Project Number</td>
+              <td class="clear-filter" ><a href="#" id="clear-projectno-filter">Clear</a></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="filter-background"><input id="projectno-filter" type="text" placeholder="e.g. 2018-1234" class="form-input pull-right" style="width: 90%;" value="{{projectnumberfilter}}" /></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="filter-background"><a id="btn-apply-projectno-filter" href="#" class="btn btn-primary pull-right">Apply</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table width="100%">
+            <tr>
+              <td class="filter-heading" >Date Taken</td>
+              <td class="clear-filter" ><a href="#" id="clear-datetaken-filter">Clear</a></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="filter-background"><span class="filter-subheading">Start Date:</span><br/><input id="startdatetaken-filter" type="text" class="form-input date-picker pull-right" style="width: 90%;" value="{{startdatedatenfilter}}" /></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="filter-background"><span class="filter-subheading">End Date:</span><br/><input id="enddatetaken-filter" type="text" class="form-input date-picker pull-right" style="width: 90%;" value="{{enddatedatenfilter}}" /></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="filter-background"><a id="btn-apply-datetaken-filter" href="#" class="btn btn-primary pull-right">Apply</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table width="100%">
+            <tr>
+              <td class="filter-heading" colspan="2">Color</td>
+              <td class="clear-filter" colspan="2"><a href="#" id="clear-color-filter">Clear</a></td>
+            </tr>
+            <tr>
+              <td><div class="color-filter-square {{#if isSelectedColor 'red'}}active{{/if}}" color="red"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square red"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'orange'}}active{{/if}}" color="orange"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square orange"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'yellow'}}active{{/if}}" color="yellow"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square yellow"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'green'}}active{{/if}}" color="green"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square green"></i></a></div></td>
+            </tr>
+            <tr>
+              <td><div class="color-filter-square {{#if isSelectedColor 'cyan'}}active{{/if}}" color="cyan"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square cyan"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'blue'}}active{{/if}}" color="blue"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square blue"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'purple'}}active{{/if}}" color="purple"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square purple"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'pink'}}active{{/if}}" color="pink"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square pink"></i></a></div></td>
+            </tr>
+            <tr>
+              <td><div class="color-filter-square {{#if isSelectedColor 'white'}}active{{/if}}" color="white"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square white"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'grey'}}active{{/if}}" color="grey"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square grey"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'black'}}active{{/if}}" color="black"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square black"></i></a></div></td>
+              <td><div class="color-filter-square {{#if isSelectedColor 'brown'}}active{{/if}}" color="brown"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square brown"></i></a></div></td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>

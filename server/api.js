@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 if(Meteor.isServer) {
   var api = new Restivus({
     prettyJson: true
@@ -14,9 +16,21 @@ if(Meteor.isServer) {
     }
   });
 
+  api.addRoute('newphotos/:server/:numphotos', {authRequired: false}, {
+    get: {
+      authRequired: false,
+      action: function() {
+        var server = decodeURIComponent(this.urlParams.server);
+        var num = parseInt(this.urlParams.numphotos);
+        return {total_new_photos: Photos.find({status: 'new', server: server}).count(),
+                photos: Photos.find({status: 'new', server: server},{limit: num, sort: {datefound: 1}}).fetch()};
+      }
+    }
+  });
+
   api.addCollection(Photos, {
     authRequired: false,
-    excludedEndpoints: ['getAll'],
+    //excludedEndpoints: ['getAll'],
     endpoints: {
       post: {
         action: function() {
@@ -53,10 +67,39 @@ if(Meteor.isServer) {
             same_photo = Photos.findOne({differencehash: this.bodyParams["differencehash"]});
             if(same_photo) {
               same_photo.filepaths.push(this.bodyParams['filepaths'][0])
+              Photos.update({_id: same_photo._id}, same_photo);
               Photos.remove(this.bodyParams['_id']);
-              console.log("Duplicate found: "+this.bodyParams['filepaths'][0]+" is also found in "+same_photo.filepaths[0]);
+              //console.log("Duplicate found: "+this.bodyParams['filepaths'][0]+" is also found in "+same_photo.filepaths[0]);
               return {status: "success", message: "appended"};
             }
+            // Arg again! Numbers get sent as text, so we need to turn them
+            // back to numbers
+            var keys = Object.keys(this.bodyParams);
+            //console.log(keys)
+            var vals = Object.values(this.bodyParams);
+            for(var i=0; i<keys.length; i++) {
+              //console.log("Accessing "+i);
+              try {
+                if(!isNaN(vals[i])) {
+                  //console.log("Testing "+keys[i]+" "+vals[i]);
+                  this.bodyParams[keys[i]] = Number.parseFloat(vals[i]);
+                }
+              } catch(e) {
+                //console.log(e)
+                continue;
+              }
+              // Change text dates to real dates
+              if(keys[i] == "datetaken") {
+                d = moment(vals[i],"YYYY:MM:Do hh:mm:ss")
+                if(d.isValid && moment().diff(d,'days') < 10000 ) {
+                  this.bodyParams[keys[i]] = d.toDate();
+                }else{
+                  this.bodyParams[keys[i]] = "n/a"
+                }
+              }
+            }
+            //console.log(this.bodyParams);
+
             Photos.update({_id: photo._id}, this.bodyParams);
             return {status: "success", message: "updated"};
           }

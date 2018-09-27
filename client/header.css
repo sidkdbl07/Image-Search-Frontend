@@ -6,6 +6,10 @@
   width: 50px;
 }
 
+.filter-label {
+  color: #999;
+}
+
 .header {
   background-color: #ddd;
   height: 50px;
@@ -24,8 +28,10 @@ a.header-control:hover {
 .header-controls {
   position: absolute;
   top: 0px;
-  right: 0px;
+  width: 100%;
   height: 50px;
+  line-height: 50px;
+  margin-bottom: 0px;
   display: inline-block;
   white-space: nowrap;
 }

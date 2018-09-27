@@ -36,6 +36,12 @@ Template.sidenav.onRendered(function() {
 });
 
 Template.sidenav.helpers({
+  isLoggedIn: function() {
+    if(Meteor.user()) {
+      return true;
+    }
+    return false;
+  },
   isMenuItemSelected: function(name) {
     if(Session.get("activeRoute") == name) {
       return true;

@@ -6,20 +6,16 @@ html, body {
   font-size: 14px;
 }
 
-.blue {
-  color: #2980b9;
+#at-pwd-form > fieldset {
+  border: none;
 }
 
-.green {
-  color: #27ae60;
+.aeblue {
+  color: #2980b9;
 }
 
 .lightgreenbg {
   background-color: #efe;
-}
-
-.red {
-  color: #C41230;
 }
 
 .lightredbg {

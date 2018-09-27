@@ -1,11 +1,49 @@
+.clear-filter {
+  text-align: right;
+  padding-right: 5px;
+}
+
+.clear-filter > a {
+  color: #60a6fc;
+  font-size: 12px;
+}
+
 .close-side-view {
   margin-top: 3px;
   border-radius: 0px;
 }
 
+.color-filter-square {
+  background-color: #272727;
+  width: 100%;
+  text-align: center;
+}
+
+.color-filter-square.active {
+  background-color: #3c4e60;
+}
+
 .filepath-text, .dimension-text {
   font-size: 11px;
   color: #bbb;
+  overflow-wrap: break-word;
+}
+
+.filter-background {
+  background-color: #272727;
+  width: 100%;
+  padding: 10px;
+}
+
+.filter-heading {
+  color: #999;
+  padding-left: 15px;
+  font-weight: bold;
+}
+
+.filter-subheading {
+  color: #999;
+  padding-left: 30px;
 }
 
 .photo-container {
@@ -22,6 +60,17 @@
   z-index: 1;
   max-width: 167px;
   max-height: 167px;
+}
+
+.photo-container.selected {
+  float: left;
+  height: 167px;
+  max-height: 167px;
+  margin: 1px 3px;
+}
+
+.photo-container.selected > img {
+  border: 2px #090 solid;
 }
 
 .photo-tag.show {
@@ -43,4 +92,52 @@
 
 .row {
   margin-bottom: 10px;
+}
+
+.black {
+  color: black;
+}
+
+.blue {
+  color: #0000FF;
+}
+
+.brown {
+  color: #885418;
+}
+
+.cyan {
+  color: #03c0c6;
+}
+
+.green {
+  color: #27ae60;
+}
+
+.grey {
+  color: #999;
+}
+
+.orange {
+  color: #e67e22;
+}
+
+.pink {
+  color: #FF98BF;
+}
+
+.purple {
+  color: #762CA7;
+}
+
+.red {
+  color: #c0392b;
+}
+
+.white {
+  color: white;
+}
+
+.yellow {
+  color: #f1c40f;
 }
