@@ -12,7 +12,7 @@
 
 .header {
   background-color: #ddd;
-  height: 50px;
+  height: 42px;
   width: 100%;
   white-space: nowrap;
 }
@@ -29,8 +29,8 @@ a.header-control:hover {
   position: absolute;
   top: 0px;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 42px;
+  line-height: 42px;
   margin-bottom: 0px;
   display: inline-block;
   white-space: nowrap;

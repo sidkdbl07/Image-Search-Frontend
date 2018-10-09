@@ -1,6 +1,17 @@
+.badge {
+  color: black;
+  margin: 1px;
+  font-weight: normal;
+  background-color: lightgrey;
+},
 .clear-filter {
   text-align: right;
   padding-right: 5px;
+}
+
+td.clear-filter {
+  width: 20%;
+  text-align: right;
 }
 
 .clear-filter > a {
@@ -29,10 +40,20 @@
   overflow-wrap: break-word;
 }
 
+.dimension-label {
+  font-size: 11px;
+  color: #777;
+  overflow-wrap: break-word;
+}
+
 .filter-background {
   background-color: #272727;
   width: 100%;
   padding: 10px;
+}
+
+td.filter-heading {
+  width: 80%;
 }
 
 .filter-heading {
@@ -48,9 +69,11 @@
 
 .photo-container {
   float: left;
-  height: 167px;
-  max-height: 167px;
+  height: 240px;
+  max-height: 240px;
   margin: 3px 5px;
+  background-color: white;
+  padding: 3px;
 }
 
 .photo-container > img {
@@ -58,19 +81,19 @@
   top: 0px;
   left: 0px;
   z-index: 1;
-  max-width: 167px;
-  max-height: 167px;
+  max-width: 240px;
+  max-height: 240px;
 }
 
 .photo-container.selected {
   float: left;
-  height: 167px;
-  max-height: 167px;
+  height: 240px;
+  max-height: 240px;
   margin: 1px 3px;
 }
 
 .photo-container.selected > img {
-  border: 2px #090 solid;
+  border: 2px #0d0 solid;
 }
 
 .photo-tag.show {
@@ -92,6 +115,13 @@
 
 .row {
   margin-bottom: 10px;
+}
+
+.star {
+  float: right;
+  height: 24px;
+  line-height: 24px;
+  margin-right: 4px;
 }
 
 .black {

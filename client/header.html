@@ -1,18 +1,21 @@
 <template name="header">
   <div class="header">
     <div class="header-controls row">
-      <div class="col-xs-10">
+      <div class="col-xs-9">
         <span class="filter-label">Project(s): </span>{{#if isProjectNumberSelected}}{{projectnumberfilter}}{{else}}All{{/if}}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <span class="filter-label">Date taken: </span>{{#if isDateTakenSelected}}{{{dateFilterRange}}}{{else}}All{{/if}}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <span class="filter-label">Color: </span>{{#if isColorSelected}}<i class="fa fa-square {{color}}"></i>{{else}}All{{/if}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="filter-label">Preferred: </span>{{#if isStarredSelected}}<i class="fa fa-star yellow"></i> BD Prefferred{{else}}All{{/if}}
+
       </div>
-      <div class="col-xs-1">
+      <div class="col-xs-2" style="text-align: center;">
         <a href="#" class="btn btn-default" id="btn-clear-filters">Clear Filters</a>
       </div>
-      <div class="col-xs-1">
-        <a href="#" class="btn btn-default" id="btn-open-filter"><i class="fa fa-filter"></i></a>
+      <div class="col-xs-1" style="text-align: center;">
+      <a href="#" class="btn btn-default" id="btn-open-filter"><i class="fa fa-filter"></i></a>
       </div>
     </div>
   </div>

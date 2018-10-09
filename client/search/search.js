@@ -40,8 +40,9 @@ function showMoreVisible() {
 
 Template.search.onRendered(function() {
   Session.setDefault('photosLimit', PHOTOS_INCREMENT);
+  Session.setDefault('bdonly', "");
   Tracker.autorun(() => {
-    Meteor.subscribe('photos', Session.get('photosLimit'), Session.get("sortColor"), Session.get("filterProjectNo"), Session.get("startDate"), Session.get("endDate"));
+    Meteor.subscribe('photos', Session.get('photosLimit'), Session.get("sortColor"), Session.get("filterProjectNo"), Session.get("startDate"), Session.get("endDate"), Session.get("bdonly"));
   });
   $(".date-picker").datepicker({format:"dd/mm/yyyy"});
   //$("#form-date").datepicker().datepicker('setDate', new Date());
@@ -84,6 +85,19 @@ Template.search.helpers({
     }
     return "<img src='data:image/jpg;base64,"+this.thumbnail+"' />";
   },
+  formattedLabels: function() {
+    str = "";
+    if('labels' in this && Array.isArray(this["labels"])) {
+      for(var i=0; i<this["labels"].length; i++) {
+        str = str+"<span class='badge'>"+this["labels"][i]+"</span>";
+      }
+      return str;
+    }
+    if('labels' in this && typeof(this["labels"]) == 'string') {
+      return "<span class='badge'>"+this["labels"]+"</span>";
+    }
+    return "No labels"
+  },
   hasLocation: function() {
     if(!this.location || this.location != null) {
       return false;
@@ -101,6 +115,12 @@ Template.search.helpers({
   isSelectedPhoto: function() {
     if(Session.get('selectedPhoto')) {
       return (this._id == Session.get('selectedPhoto'));
+    }
+    return false;
+  },
+  isStarredSelected: function() {
+    if(Session.get("bdonly") == "True") {
+      return true;
     }
     return false;
   },
@@ -124,6 +144,12 @@ Template.search.helpers({
     }
     return "";
   },
+  starred: function() {
+    if(this.star == "True") {
+      return true;
+    }
+    return false;
+  },
   startdatedatenfilter: function() {
     if(Session.get("startDate")) {
       return moment(Session.get("startDate"),"DD/MM/YYYY").format('DD/MM/YYYY');
@@ -143,6 +169,15 @@ Template.search.events({
     Session.set('startDate',$("#startdatetaken-filter").val());
     Session.set('endDate',$("#enddatetaken-filter").val());
     $("#photos-content").animate({ scrollTop: 0 }, "slow");
+  },
+  'click #btn-apply-starred-filter': function(e) {
+    e.preventDefault();
+    Session.set('bdonly', "True");
+    $("#photos-content").animate({ scrollTop: 0 }, "slow");
+  },
+  'click .clear-starred-filter': function(e) {
+    e.preventDefault();
+    Session.set('bdonly', "");
   },
   'click .close-side-view': function(e) {
     e.preventDefault();

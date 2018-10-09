@@ -6,7 +6,7 @@
         {{#each photos}}
           <div class="photo-container {{#if isSelectedPhoto}}selected{{/if}}" photo-id="{{_id}}">
             {{{formattedImg}}}
-            <div class="photo-tag">&nbsp;{{width}} x {{height}} {{selectedColor}}</div>
+            <div class="photo-tag">&nbsp;{{width}} x {{height}} {{selectedColor}} {{#if starred}}<i class="star fa fa-star yellow"></i>{{else}}<i class="star fa fa-star-o"></i>{{/if}}</div>
           </div>
         {{/each}}
         {{#if morePhotos}}
@@ -38,9 +38,17 @@
       </div>
       <div class="row">
         <div class="col-sm-2 dimension-text text-center"><i class="fa fa-camera fa-2x"></i></div>
+        <div class="col-sm-4 dimension-text">
+          <span class="dimension-label">Taken:</span> <br/>{{formattedDate datetaken}}
+        </div>
+        <div class="col-sm-6 dimension-text">
+          <span class="dimension-label">Found:</span> <br/>{{formattedDate datefound}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 dimension-text text-center"><i class="fa fa-tag fa-2x"></i></div>
         <div class="col-sm-10 dimension-text">
-          Taken: {{formattedDate datetaken}}<br/>
-          Found: {{formattedDate datefound}}<br/>
+          {{{formattedLabels}}}
         </div>
       </div>
       <div class="row">
@@ -51,7 +59,17 @@
           Longitude: {{location.coordinates.[0]}}<br/>
           <a href="https://maps.google.com/maps?q={{location.coordinates.[1]}},{{location.coordinates[0]}}&z=8.5" target="_blank">See on map</a>
           {{else}}
-          No geo-location data attached
+          No geo-location data
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 dimension-text text-center">{{#if starred}}<i class="fa fa-star fa-2x yellow"></i>{{else}}<i class="fa fa-star-o fa-2x"></i>{{/if}}</div>
+        <div class="col-sm-10 dimension-text">
+          {{#if starred}}
+            <span class="yellow">This image is preferred for BD purposes</span>
+          {{else}}
+            This image has not yet been marked as preffered for BD purposes
           {{/if}}
         </div>
       </div>
@@ -87,6 +105,24 @@
         <div class="col-sm-12">
           <table width="100%">
             <tr>
+              <td class="filter-heading" >BD Preferred</td>
+              <td class="clear-filter" ><a href="#" class="clear-starred-filter">Clear</a></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="filter-background">
+                <div class="btn-group pull-right">
+                  <a href="#" class="clear-starred-filter btn {{#if isStarredSelected}}btn-default{{else}}btn-success{{/if}}">View All</a>
+                  <a id="btn-apply-starred-filter" href="#" class="btn {{#if isStarredSelected}}btn-success{{else}}btn-default{{/if}}"><i class="fa fa-star yellow"></i> BD Preferred</a>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table width="100%">
+            <tr>
               <td class="filter-heading" >Date Taken</td>
               <td class="clear-filter" ><a href="#" id="clear-datetaken-filter">Clear</a></td>
             </tr>
@@ -110,10 +146,10 @@
               <td class="clear-filter" colspan="2"><a href="#" id="clear-color-filter">Clear</a></td>
             </tr>
             <tr>
-              <td><div class="color-filter-square {{#if isSelectedColor 'red'}}active{{/if}}" color="red"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square red"></i></a></div></td>
-              <td><div class="color-filter-square {{#if isSelectedColor 'orange'}}active{{/if}}" color="orange"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square orange"></i></a></div></td>
-              <td><div class="color-filter-square {{#if isSelectedColor 'yellow'}}active{{/if}}" color="yellow"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square yellow"></i></a></div></td>
-              <td><div class="color-filter-square {{#if isSelectedColor 'green'}}active{{/if}}" color="green"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square green"></i></a></div></td>
+              <td width="25%"><div class="color-filter-square {{#if isSelectedColor 'red'}}active{{/if}}" color="red"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square red"></i></a></div></td>
+              <td width="25%"><div class="color-filter-square {{#if isSelectedColor 'orange'}}active{{/if}}" color="orange"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square orange"></i></a></div></td>
+              <td width="25%"><div class="color-filter-square {{#if isSelectedColor 'yellow'}}active{{/if}}" color="yellow"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square yellow"></i></a></div></td>
+              <td width="25%"><div class="color-filter-square {{#if isSelectedColor 'green'}}active{{/if}}" color="green"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square green"></i></a></div></td>
             </tr>
             <tr>
               <td><div class="color-filter-square {{#if isSelectedColor 'cyan'}}active{{/if}}" color="cyan"><a href="#" class="btn btn-link set-color-filter"><i class="fa fa-square cyan"></i></a></div></td>

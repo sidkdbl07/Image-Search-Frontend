@@ -36,6 +36,12 @@ Template.header.helpers({
     }
     return false;
   },
+  isStarredSelected: function() {
+    if(Session.get("bdonly") == "True") {
+      return true;
+    }
+    return false;
+  },
   projectnumberfilter: function() {
     return Session.get("filterProjectNo");
   },
@@ -48,10 +54,11 @@ Template.header.events({
   'click #btn-clear-filters': function(e) {
     e.preventDefault();
     Session.set("filterProjectNo",null);
-    Session.set("endDate",null)
-    Session.set("startDate",null)
-    Session.set("sortColor",null)
-    Session.set('photosLimit',128)
+    Session.set("endDate",null);
+    Session.set("startDate",null);
+    Session.set("sortColor",null);
+    Session.set('photosLimit',128);
+    Session.set('bdonly',"");
     $("#photos-content").animate({ scrollTop: 0 }, "slow");
   },
   'click #btn-open-filter': function(e) {

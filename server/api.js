@@ -5,6 +5,23 @@ if(Meteor.isServer) {
     prettyJson: true
   });
 
+  api.addRoute('processedphotos/:server/:numphotos/:beforedate', {authRequired: false}, {
+    get: {
+      authRequired: false,
+      action: function() {
+        var server = decodeURIComponent(this.urlParams.server);
+        var num = parseInt(this.urlParams.numphotos);
+        var beforedate = decodeURIComponent(this.urlParams.beforedate);
+        beforedate = moment(beforedate,"YYYY-MM-DD HH:mm:ss").toDate();
+        //console.log("Asked for "+num+" photos from before "+moment(beforedate).format("YYYY-MM-DD HH:mm:ss"))
+        var tot = Photos.find({status: 'processed', server: server, processeddate: {$lt:beforedate}}).count();
+
+        return {total_photos: tot,
+                photos: Photos.find({status: 'processed', server: server, processeddate: {$lt:beforedate}},{limit: num, sort: {datefound: 1}}).fetch()};
+      }
+    }
+  });
+
   api.addRoute('newphotos/:server', {authRequired: false}, {
     get: {
       authRequired: false,
@@ -89,8 +106,8 @@ if(Meteor.isServer) {
                 continue;
               }
               // Change text dates to real dates
-              if(keys[i] == "datetaken") {
-                d = moment(vals[i],"YYYY:MM:Do hh:mm:ss")
+              if(keys[i] == "datetaken" || keys[i] == "processeddate") {
+                d = moment(vals[i],"YYYY:MM:DD hh:mm:ss")
                 if(d.isValid && moment().diff(d,'days') < 10000 ) {
                   this.bodyParams[keys[i]] = d.toDate();
                 }else{

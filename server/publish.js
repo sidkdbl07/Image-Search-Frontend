@@ -1,6 +1,7 @@
 import moment from 'moment';
 
-Meteor.publish('photos', function(limit,sort,projectNo,startDate,endDate) {
+Meteor.publish('photos', function(limit,sort,projectNo,startDate,endDate,bdonly) {
+  //console.log(limit+"; "+sort+"; "+projectNo+"; "+startDate+"; "+endDate+"; "+bdonly);
   var filter = {status: 'processed'};
   if(projectNo) {
     filter['projectno'] = projectNo;
@@ -14,6 +15,9 @@ Meteor.publish('photos', function(limit,sort,projectNo,startDate,endDate) {
   }
   if(datetaken["$gte"] || datetaken["$lte"]) {
     filter['datetaken'] = datetaken
+  }
+  if(bdonly == "True") {
+    filter['star'] = "True";
   }
   var sorter = {};
   if(sort && sort != "" && sort != null) {
@@ -35,12 +39,15 @@ Meteor.publish('photos', function(limit,sort,projectNo,startDate,endDate) {
     green: 1,
     grey: 1,
     height: 1,
+    labels: 1,
     orange: 1,
     pink: 1,
     projectno: 1,
+    processeddate: 1,
     purple: 1,
     red: 1,
     //server: 0,
+    star: 1,
     //status: 0,
     thumbnail: 1,
     white: 1,
